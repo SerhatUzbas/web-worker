@@ -27,7 +27,7 @@ const ClientImport = ({ children }: { children?: ReactNode }) => {
             key: 0,
           })
         : props?.children;
-
+console.log(props)
       return React.createElement(
         type,
         { key: props?.key, ...props },
@@ -38,40 +38,7 @@ const ClientImport = ({ children }: { children?: ReactNode }) => {
     // If the element does not have children, create a simple element
   };
 
-  //  --------------------------------------------------------------------------
 
-  const recursiveCreater = (element: any, key?: any): any => {
-    const e = createElement(element.type, null);
-    if (Array.isArray(element?.props?.children)) {
-      console.log("childIsArray");
-      console.log(element);
-      element?.props?.children?.map((item: any, index: number) => {
-        if (Array.isArray(item?.props?.children)) {
-          console.log("isArrayAgain");
-          return createElement(
-            item.type,
-            { key: item?.key || index },
-            recursiveCreater(item)
-          );
-        }
-        console.log("isNotArray");
-        return createElement(item?.type, null, item?.props?.children);
-      });
-      // return createElement(
-      //   element?.type,
-      //   { key: element?.key || key },
-      //   children
-      // );
-    }
-    if (!Array.isArray(element?.props?.children)) {
-      return createElement(element?.type, null, element?.props?.children);
-    }
-    // return createElement(
-    //   element?.type || "div",
-    //   { key: element.key || key },
-    //   element?.props?.children
-    // );
-  };
 
   //  --------------------------------------------------------------------------
 
@@ -86,53 +53,13 @@ const ClientImport = ({ children }: { children?: ReactNode }) => {
       // console.log(comp);
       if (!!comp.module) {
         const parsed = JSON.parse(comp.module);
-        // const ElementFromWorker = createElement(
-        //   parsed.type,
-        //   null,
-        //   // parsed.props.children
-        //   //   // parsed.props.children.map((item: any, i: number) => (
-        //   //   //   <div key={i}>{item}</div>
-        //   //   // ))
-        //   recursiveCreater(parsed)
-        // );
-
-        // const element = recursiveCreater(parsed);
-        // const ElementFromWorker = recursiveCreater(parsed);
-        // const ElementFromWorker = renderElement({
-        //   type: "div",
-        //   key: null,
-        //   ref: null,
-        //   props: {
-        //     children: [
-        //       {
-        //         type: "div",
-        //         key: "0",
-        //         ref: null,
-        //         props: {
-        //           children: {
-        //             type: "p",
-        //             key: null,
-        //             ref: null,
-        //             props: {
-        //               children: "This is First",
-        //             },
-        //           },
-        //         },
-        //       },
-        //       // ... (other elements)
-        //     ],
-        //   },
-        // });
-        // console.log(ElementFromWorker);
-        // console.log(parsed);
-        // const x = createElement(...parsed);
         const ElementFromWorker = renderElement(parsed);
 
         setComponent(ElementFromWorker);
       }
     };
     // dirName: Doğu
-    worker.postMessage({ modulePath: "./ImportFromWorkerJs.js" });
+    worker.postMessage({ modulePath: "./importFromWorkerJs.jsx" });
 
     return () => {
       worker.terminate();
