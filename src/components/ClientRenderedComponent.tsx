@@ -13,7 +13,7 @@ const ClientRenderedComponent = () => {
     worker.postMessage([2, 3, 4]);
   }, []);
 
-  console.log(arr);
+  // console.log(arr);
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       My Client Rendered Component!
